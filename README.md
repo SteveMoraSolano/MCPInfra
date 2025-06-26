@@ -53,5 +53,5 @@ Once configured, Claude will automatically pull and execute the container when p
 
 ## Available MCP Tools
 - ListResourceGroups: Lists all resource groups in your Azure subscription.
-- DeployVirtualMachine (WIP)	Deploys a VM using Terraform with custom inputs.
+- DeployVirtualMachine:	Deploys a VM using Terraform.
 - More tools coming soon!
