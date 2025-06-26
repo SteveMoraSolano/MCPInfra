@@ -1,4 +1,4 @@
-MCP Azure Infrastructure Assistant
+## MCP Azure Infrastructure Assistant
 
 Is a powerful Model Context Protocol (MCP) server tool designed to help you **interact with and automate Azure infrastructure** 
 using natural language through Claude. It supports both Azure SDK operations and Infrastructure-as-Code deployments with Terraform.
