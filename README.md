@@ -32,13 +32,13 @@ using natural language through Claude. It supports both Azure SDK operations and
 ```json
   {
   "mcpServers": {
-    "infrawizard": {
+    "azmcp": {
       "command": "docker",
       "args": [
         "run",
         "--rm",
         "-i",
-        "stevemora/infrawizard:latest"
+        "stevemora/azmcp:latest"
       ],
       "env": {
         "AZ_TENANT_ID": "your-tenant-id",
