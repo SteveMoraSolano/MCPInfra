@@ -13,14 +13,18 @@ using MCPServer.Tools;
 public static class ResourceGroupTools
 {
     [McpServerTool, Description("Lists all Azure Resource Groups in the subscription.")]
+
     public static async Task<List<string>> funListResourceGroups(
         string pSubscriptionId)
+
     {
         var vResult = new List<string>();
 
         try
         {
+
             var vArmClient = AZ_AuthHelper.funGetArmClient(pSubscriptionId);
+
             var vSubscription = await vArmClient.GetDefaultSubscriptionAsync();
             var vResourceGroups = vSubscription.GetResourceGroups();
 
@@ -39,13 +43,17 @@ public static class ResourceGroupTools
     }
 [McpServerTool, Description("Lists all resources inside a given Azure Resource Group.")]
     public static async Task<List<string>> funListResourcesInResourceGroup(
+
          string pResourceGroupName,string pSubscriptionId)
+
     {
         var vResult = new List<string>();
 
         try
         {
+
             var vArmClient = AZ_AuthHelper.funGetArmClient(pSubscriptionId);
+
             var vSubscription = await vArmClient.GetDefaultSubscriptionAsync();
             var vResourceGroup = await vSubscription.GetResourceGroups().GetAsync(pResourceGroupName);
 
@@ -64,11 +72,13 @@ public static class ResourceGroupTools
     }
     [McpServerTool, Description("Creates a new Azure Resource Group.")]
     public static async Task<string> funCreateResourceGroup(
+
        string pResourceGroupName,string pLocation,string pSubscriptionId)
     {
         try
         {
             var vArmClient = AZ_AuthHelper.funGetArmClient(pSubscriptionId);
+
             var vSubscription = await vArmClient.GetDefaultSubscriptionAsync();
             var vRgData = new ResourceGroupData(pLocation);
 
