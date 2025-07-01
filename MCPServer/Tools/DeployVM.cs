@@ -8,7 +8,7 @@ namespace MCPServer.Tools;
 public static class TerraformTools
 {
     [McpServerTool, Description("Deploys a VM.")]
-    public static string funDeployVirtualMachine(string pVmName, string pLocation, string pSshPublicKey)
+    public static string funDeployVirtualMachine(string pSubscriptionId,string pVmName, string pLocation, string pSshPublicKey)
     {
         try
         {
@@ -16,7 +16,6 @@ public static class TerraformTools
             Directory.CreateDirectory(vWorkingDir);
 
             var vTenantId = Environment.GetEnvironmentVariable("AZ_TENANT_ID");
-            var vSubscriptionId = Environment.GetEnvironmentVariable("AZ_SUBSCRIPTION_ID");
             var vClientId = Environment.GetEnvironmentVariable("AZ_CLIENT_ID");
             var vClientSecret = Environment.GetEnvironmentVariable("AZ_CLIENT_SECRET");
 
@@ -24,7 +23,7 @@ public static class TerraformTools
 provider ""azurerm"" {{
   features {{}}
   tenant_id       = ""{vTenantId}""
-  subscription_id = ""{vSubscriptionId}""
+  subscription_id = ""{pSubscriptionId}""
   client_id       = ""{vClientId}""
   client_secret   = ""{vClientSecret}""
 }}

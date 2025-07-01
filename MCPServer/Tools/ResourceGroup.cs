@@ -13,13 +13,14 @@ using MCPServer.Tools;
 public static class ResourceGroupTools
 {
     [McpServerTool, Description("Lists all Azure Resource Groups in the subscription.")]
-    public static async Task<List<string>> funListResourceGroups()
+    public static async Task<List<string>> funListResourceGroups(
+        string pSubscriptionId)
     {
         var vResult = new List<string>();
 
         try
         {
-            var vArmClient = AZ_AuthHelper.funGetArmClient();
+            var vArmClient = AZ_AuthHelper.funGetArmClient(pSubscriptionId);
             var vSubscription = await vArmClient.GetDefaultSubscriptionAsync();
             var vResourceGroups = vSubscription.GetResourceGroups();
 
@@ -38,13 +39,13 @@ public static class ResourceGroupTools
     }
 [McpServerTool, Description("Lists all resources inside a given Azure Resource Group.")]
     public static async Task<List<string>> funListResourcesInResourceGroup(
-        [Description("Name of the Resource Group.")] string pResourceGroupName)
+         string pResourceGroupName,string pSubscriptionId)
     {
         var vResult = new List<string>();
 
         try
         {
-            var vArmClient = AZ_AuthHelper.funGetArmClient();
+            var vArmClient = AZ_AuthHelper.funGetArmClient(pSubscriptionId);
             var vSubscription = await vArmClient.GetDefaultSubscriptionAsync();
             var vResourceGroup = await vSubscription.GetResourceGroups().GetAsync(pResourceGroupName);
 
@@ -52,9 +53,6 @@ public static class ResourceGroupTools
             {
                 vResult.Add($"- {vGenericResource.Data.ResourceType} => {vGenericResource.Data.Name}");
             }
-
-            if (vResult.Count == 0)
-                vResult.Add($"[INFO] No resources found in resource group '{pResourceGroupName}'.");
 
             return vResult;
         }
@@ -66,12 +64,11 @@ public static class ResourceGroupTools
     }
     [McpServerTool, Description("Creates a new Azure Resource Group.")]
     public static async Task<string> funCreateResourceGroup(
-        [Description("Name of the Resource Group.")] string pResourceGroupName,
-        [Description("Azure region (e.g., eastus, westeurope).")] string pLocation)
+       string pResourceGroupName,string pLocation,string pSubscriptionId)
     {
         try
         {
-            var vArmClient = AZ_AuthHelper.funGetArmClient();
+            var vArmClient = AZ_AuthHelper.funGetArmClient(pSubscriptionId);
             var vSubscription = await vArmClient.GetDefaultSubscriptionAsync();
             var vRgData = new ResourceGroupData(pLocation);
 
