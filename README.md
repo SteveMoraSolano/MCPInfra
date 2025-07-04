@@ -52,6 +52,29 @@ using natural language through Claude. It supports both Azure SDK operations and
 Once configured, Claude will automatically pull and execute the container when prompted with tasks related to Azure infrastructure.
 
 ## Available MCP Tools
-- ListResourceGroups: Lists all resource groups in your Azure subscription.
-- DeployVirtualMachine (WIP)	Deploys a VM using Terraform with custom inputs.
-- More tools coming soon!
+### Resource Groups
+- **List Resource Groups** – Retrieves all resource groups in the current Azure subscription.
+- **Create Resource Group** – Creates a new resource group with user-defined parameters.
+- **List Resources in Resource Group** – Lists all resources within a specific resource group.
+
+### App Configuration
+- **List App Configuration Stores** – Retrieves all App Configuration instances in the subscription.
+
+### Subscriptions
+- **List Subscriptions** – Displays all accessible Azure subscriptions.
+
+### Cosmos DB
+- **List Cosmos DB Accounts** – Lists all Cosmos DB accounts in the subscription.
+
+### Log Analytics
+- **List Log Analytics Workspaces** – Shows all Log Analytics workspaces available.
+
+### Storage
+- **List Storage Accounts** – Lists all storage accounts across the subscription.
+
+### Virtual Machines *(WIP)*
+- **Deploy Virtual Machine** – Uses Terraform to deploy a VM with customizable inputs.
+
+---
+
+🔧 *More tools and features are on the way!*
