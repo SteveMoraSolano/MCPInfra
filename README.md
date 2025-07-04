@@ -54,7 +54,7 @@ Once configured, Claude will automatically pull and execute the container when p
 ## Available MCP Tools
 ### Resource Groups
 - **List Resource Groups** – Retrieves all resource groups in the current Azure subscription.
-- **Create Resource Group** – Creates a new resource group with user-defined parameters.
+- **Create Resource Group** – Creates a new resource group.
 - **List Resources in Resource Group** – Lists all resources within a specific resource group.
 
 ### App Configuration
@@ -72,7 +72,7 @@ Once configured, Claude will automatically pull and execute the container when p
 ### Storage
 - **List Storage Accounts** – Lists all storage accounts across the subscription.
 
-### Virtual Machines *(WIP)*
+### Virtual Machines
 - **Deploy Virtual Machine** – Uses Terraform to deploy a VM with customizable inputs.
 
 ---
