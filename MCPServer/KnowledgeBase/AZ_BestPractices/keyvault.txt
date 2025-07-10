@@ -1,0 +1,73 @@
+Azure Key Vault Best Practices
+
+GENERAL USAGE:
+- Use Key Vault to store and manage secrets, keys, and certificates securely.
+- Use separate vaults per environment (e.g., dev, test, prod) to avoid accidental access.
+- Assign meaningful naming conventions that include environment and purpose.
+- Use tags to manage cost allocation and identify ownership.
+
+AUTHENTICATION & ACCESS:
+- Prefer **Managed Identity** to access secrets from applications or services.
+- Use **role-based access control (RBAC)** over traditional access policies when possible.
+- Assign **least-privilege** roles such as:
+  - `Key Vault Reader`: for read-only access
+  - `Key Vault Secrets User`: for accessing secrets only
+  - `Key Vault Administrator`: only where strictly necessary
+- Never give users broad rights like full admin unless required.
+- Use Azure AD Conditional Access to protect portal and programmatic access.
+
+SECRETS MANAGEMENT:
+- Rotate secrets regularly (automate using Key Vault + Logic Apps or Azure Automation).
+- Use secret versioning to avoid unintended overwrites.
+- Avoid storing secrets in code or environment variables directly—use Key Vault references instead.
+- Audit secret usage with diagnostic logs.
+
+KEYS MANAGEMENT:
+- Use customer-managed keys (CMK) if compliance requires more control.
+- Use HSM-backed keys (Premium tier) for sensitive workloads.
+- Rotate encryption keys regularly or use automatic key rotation (preview or GA).
+- Enable soft-delete and purge protection for recovery and tamper protection.
+
+CERTIFICATES MANAGEMENT:
+- Use Key Vault to import, create, or manage SSL/TLS certificates.
+- Enable automatic certificate renewal using integrated issuers (e.g., DigiCert).
+- Monitor certificate expiration proactively to avoid downtime.
+- Use Key Vault references in App Services for automatic binding.
+
+SECURITY SETTINGS:
+- Enable **soft-delete** and **purge protection** (critical for production vaults).
+- Disable public network access and use **private endpoints** when possible.
+- Restrict access to the vault using firewall and virtual network rules.
+- Enable **Defender for Key Vault** for alerting on suspicious activity.
+- Turn on **logging and metrics** (Azure Monitor / Log Analytics workspace).
+
+MONITORING & AUDITING:
+- Enable **Audit Logging** (Azure Monitor Diagnostic Settings).
+- Send logs to **Log Analytics**, **Event Hubs**, or **Storage Accounts**.
+- Monitor for unauthorized access attempts, failed logins, and deletion events.
+- Create alerts for operations like secret access, key deletion, or access policy changes.
+
+INTEGRATIONS:
+- Use Key Vault integration in:
+  - App Service (via App Settings with @Microsoft.KeyVault reference)
+  - Azure Functions
+  - Azure Kubernetes Service (AKS) with CSI Driver
+  - Azure DevOps via Key Vault task
+  - Azure CLI / PowerShell / SDK (secure coding required)
+- Use `az keyvault secret set` and `az keyvault secret show` only in secure, non-interactive scripts.
+
+GOVERNANCE & COMPLIANCE:
+- Use Azure Policy to enforce:
+  - Only Premium tier usage for vaults with keys
+  - Require soft-delete and purge protection enabled
+  - Deny public network access
+- Perform regular access reviews and audit key usage.
+- Restrict certificate issuers to approved providers only.
+
+RECOMMENDED TOOLS:
+- Azure Key Vault
+- Azure Policy
+- Microsoft Defender for Cloud
+- Azure Monitor & Log Analytics
+- Azure Automation for secret/key rotation
+- Azure RBAC + Managed Identity

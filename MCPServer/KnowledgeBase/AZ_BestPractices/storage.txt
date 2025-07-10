@@ -1,0 +1,61 @@
+Azure Storage Account Best Practices
+
+GENERAL CONFIGURATION:
+- Use Standard storage for general-purpose workloads and Premium for low-latency or high-throughput needs.
+- Choose the correct performance tier (Standard, Premium) and redundancy (LRS, ZRS, GRS, RA-GRS) based on data criticality.
+- Enable soft-delete for blobs, file shares, and containers to protect against accidental deletions.
+- Use Storage v2 accounts for full functionality (required for lifecycle management, secure transfer, etc.).
+- Enable versioning to keep historical versions of blobs.
+
+SECURITY:
+- Enforce HTTPS-only access for all storage accounts (`secure transfer required` = true).
+- Use Private Endpoints or Service Endpoints to eliminate public exposure when possible.
+- Disable public blob access unless explicitly required.
+- Use Azure AD authentication over access keys whenever supported.
+- Rotate storage access keys periodically or use Azure Key Vault-managed credentials.
+- Enable Microsoft Defender for Storage to detect anomalies and threats.
+
+DATA ACCESS:
+- Apply role-based access control (RBAC) for granular permissions.
+- Use Shared Access Signatures (SAS) with short expiration and limited scope.
+- Enable SAS expiration policy via Azure Policy to enforce short-lived access tokens.
+- Monitor data access patterns using diagnostics and log analytics.
+
+REDUNDANCY & RESILIENCE:
+- Use GRS or RA-GRS for critical workloads needing geographic disaster recovery.
+- For ZRS or GZRS, deploy in supported regions for higher availability.
+- Evaluate whether read-access geo-redundancy (RA-GRS) is necessary or wasteful.
+- Use lifecycle policies to archive or delete stale data automatically.
+
+PERFORMANCE & SCALING:
+- Use Premium storage (e.g., Premium Block Blob) for low latency.
+- Monitor capacity limits and avoid reaching storage account transaction limits.
+- Use separate storage accounts for high-throughput workloads to avoid throttling.
+- Enable Large File Shares feature when using Azure Files for enterprise-scale needs.
+
+LIFECYCLE MANAGEMENT:
+- Define lifecycle rules to move data to Cool/Archive tiers or delete after retention periods.
+- Use tiering for cost optimization: Hot (active), Cool (infrequently accessed), Archive (rarely).
+- Combine tagging with lifecycle rules for fine-grained automation.
+
+MONITORING & LOGGING:
+- Enable diagnostic settings for Storage to send logs and metrics to Log Analytics.
+- Monitor metrics like success/failure rates, latency, availability, egress/ingress.
+- Set alerts for abnormal traffic or high error rates.
+- Analyze access logs to detect unauthorized access or data exfiltration.
+
+BACKUP & RECOVERY:
+- Enable blob soft delete, versioning, and point-in-time restore (PITR) for critical data.
+- Enable Azure Backup for Azure Files if needed.
+- Enable container soft delete to protect metadata loss.
+
+GOVERNANCE & POLICY:
+- Use Azure Policy to enforce secure transfer, public access settings, and key rotation.
+- Use tagging for environment, data sensitivity, or project tracking.
+- Limit allowed SKUs or access tiers through policy definitions.
+
+RECOMMENDED TOOLS:
+- Azure Storage Explorer for manual access and management.
+- Azure Monitor and Log Analytics for diagnostics.
+- Microsoft Defender for Storage.
+- Azure Policy for compliance enforcement.

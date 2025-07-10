@@ -1,0 +1,59 @@
+Azure Cost Optimization Best Practices
+
+GENERAL STRATEGIES:
+- Continuously review resource usage and shut down idle or unused resources.
+- Set up budget alerts and cost anomaly detection in Azure Cost Management.
+- Use tagging (e.g., "Environment", "Owner", "Project") for cost allocation and tracking.
+- Regularly analyze cost by resource group, service, and location.
+
+VIRTUAL MACHINES:
+- Right-size VMs based on CPU/memory utilization (use Azure Advisor recommendations).
+- Use B-series or D-series burstable VMs for low-usage workloads.
+- Shut down non-production VMs automatically outside working hours.
+- Use Reserved Instances (RI) for stable workloads with 1 or 3-year commitments.
+- Leverage Azure Hybrid Benefit for Windows Server or SQL Server if licensed.
+
+STORAGE ACCOUNTS:
+- Use lifecycle management rules to move data to cooler access tiers (Cool, Archive).
+- Delete unused disks, snapshots, backups, or orphaned resources.
+- Choose the correct redundancy option (e.g., LRS for dev/test vs. GRS for prod).
+- Enable blob soft-delete only if necessary to avoid retention costs.
+
+DATABASES:
+- Use Azure SQL Serverless or Hyperscale for bursty or unpredictable workloads.
+- Auto-pause idle databases in development environments.
+- Consolidate multiple small databases into elastic pools.
+- Monitor query performance to avoid over-provisioning.
+
+APP SERVICES & FUNCTIONS:
+- Use Azure Functions (serverless) for event-driven or infrequent workloads.
+- Set scaling limits to avoid uncontrolled cost spikes.
+- Use free/shared pricing tiers for dev/testing when possible.
+- Automatically clean up stale deployment slots and test environments.
+
+CONTAINERS & KUBERNETES:
+- Use Azure Container Instances (ACI) or Azure Container Apps for short-lived tasks.
+- Right-size AKS node pools and use cluster autoscaler.
+- Use spot VMs for AKS workloads tolerant to interruptions.
+- Clean up unused images in Azure Container Registry (ACR).
+
+NETWORKING:
+- Remove unused public IPs, NICs, and load balancers.
+- Disable diagnostic logs to Storage when not needed (or redirect to Log Analytics).
+- Consolidate NSGs when possible to reduce complexity and management cost.
+
+MONITORING & LOGGING:
+- Use sampling and filtering in Application Insights to control telemetry volume.
+- Set retention policies in Log Analytics to minimize long-term storage costs.
+- Route logs to archive storage if long-term compliance is required.
+
+LICENSING & COMMITMENTS:
+- Review eligibility for Microsoft Azure Savings Plans for Compute (more flexible than RIs).
+- Reevaluate reserved capacity commitments periodically.
+- Group purchases across subscriptions using EA or Microsoft Customer Agreement.
+
+TOOLS & RECOMMENDATIONS:
+- Use Azure Advisor for cost recommendations across compute, networking, and storage.
+- Enable Cost Management + Billing for detailed insights and forecasting.
+- Use Azure Pricing Calculator and Total Cost of Ownership (TCO) tool before deployments.
+- Schedule cleanups of resources with Azure Automation or Logic Apps.
