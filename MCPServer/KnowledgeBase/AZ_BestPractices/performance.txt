@@ -1,0 +1,67 @@
+Azure Performance & Scalability Best Practices
+
+GENERAL PRINCIPLES:
+- Design for scalability: prefer horizontal scaling over vertical scaling when possible.
+- Continuously monitor workloads and right-size compute, storage, and network resources.
+- Use autoscaling and caching to handle load efficiently.
+- Leverage performance tiers and pricing SKUs optimized for specific workloads (e.g., Premium Storage, Hyperscale DB).
+
+COMPUTE (VMs, App Services, AKS):
+- Select VM series based on workload needs (e.g., E-series for memory, F-series for CPU).
+- Use VM scale sets for scalable, elastic workloads.
+- Enable accelerated networking on supported VM SKUs to reduce latency and CPU overhead.
+- Use App Service Plans with autoscale and correct tier (S1/P1v3) for production workloads.
+- In AKS, use node pools with tailored VM sizes and leverage the cluster autoscaler.
+
+STORAGE:
+- Choose correct performance tier: Hot/Cool/Archive (Blob) or Standard/Premium (Disk).
+- Use Premium SSD or Ultra Disk for high IOPS/throughput workloads.
+- Monitor queue lengths and throughput; split workload across multiple storage accounts if needed.
+- Use blob batch operations and parallel uploads for large files.
+
+DATABASES:
+- Use appropriate SKU and tier (e.g., Hyperscale for read scaling, Serverless for burst workloads).
+- Enable autoscaling where supported (e.g., Cosmos DB RU/s).
+- Optimize queries with indexing, partitioning, and tuning advisors.
+- Use caching layers (Redis Cache, in-memory caching) for read-heavy apps.
+
+NETWORKING:
+- Use Azure Front Door or Azure CDN to reduce latency for global clients.
+- Place resources in the same region to minimize cross-region traffic delays.
+- Use VNet peering instead of VPN for low-latency communication between VNets.
+- Enable load balancing (Azure Load Balancer, Application Gateway) to distribute traffic evenly.
+
+SERVERLESS & EVENT-DRIVEN:
+- Use Azure Functions or Logic Apps for short-lived or event-triggered operations.
+- Enable premium plans for Functions to avoid cold start and enable VNet integration.
+- Use durable functions for workflows that require state.
+
+CACHING & MESSAGE QUEUES:
+- Use Azure Cache for Redis to reduce repeated database queries and improve latency.
+- Use Azure Service Bus, Event Grid, or Event Hubs for decoupled architecture and performance isolation.
+- Set TTLs and eviction policies correctly in cache to avoid memory bloat.
+
+MONITORING FOR PERFORMANCE:
+- Monitor CPU, memory, IOPS, latency, request duration, and throughput for each workload.
+- Use Azure Monitor, Application Insights, and Workbooks for performance dashboards.
+- Set alerts for performance bottlenecks before they impact users.
+- Track scaling events to understand application elasticity.
+
+APPLICATION OPTIMIZATION:
+- Minimize dependency chains (e.g., avoid synchronous API calls to other services).
+- Use async processing, parallel tasks, and batching where possible.
+- Compress payloads and reduce request sizes.
+- Use CDN for static content delivery.
+
+COST VS PERFORMANCE BALANCE:
+- Continuously evaluate whether you're overprovisioned.
+- For predictable workloads, prefer Reserved Instances or autoscale thresholds.
+- For variable workloads, use serverless or burstable instances (e.g., B-series VMs, Serverless SQL).
+
+RECOMMENDED TOOLS:
+- Azure Advisor (performance recommendations)
+- Application Insights (application-level metrics)
+- Azure Monitor (infrastructure metrics)
+- Azure Load Testing (simulate and test load)
+- Network Watcher (network diagnostics)
+- Azure Front Door & CDN (latency reduction)

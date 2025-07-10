@@ -1,0 +1,64 @@
+Azure Virtual Machines (VM) Best Practices
+
+GENERAL CONFIGURATION:
+- Always use Managed Disks instead of unmanaged disks.
+- Prefer Gen2 VM images over Gen1 unless compatibility requires otherwise.
+- Use availability sets or availability zones for high availability.
+- Tag all VMs with purpose, environment, owner, and cost center metadata.
+- Set boot diagnostics to enabled with a designated storage account.
+
+AUTHENTICATION & ACCESS:
+- Use Azure AD login for Linux and Windows VMs where supported.
+- Use just-in-time VM access to limit exposure to RDP/SSH ports.
+- Never use password authentication; prefer SSH key or Azure AD.
+- Disable the local admin account if not needed.
+- Use RBAC for access control to the VM and its resource group.
+
+SECURITY CONFIGURATION:
+- Enable Microsoft Defender for Cloud VM protection.
+- Apply NSGs (Network Security Groups) to block all unnecessary traffic.
+- Restrict RDP/SSH access using IP filtering or Private Link.
+- Enable guest OS auto-patching (especially for Windows).
+- Monitor VM with Security Center and fix high-severity recommendations.
+
+PERFORMANCE & SIZING:
+- Right-size VM SKUs using Azure Advisor and metrics (CPU/mem).
+- Use Premium SSD or Ultra Disk for high-performance workloads.
+- Monitor disk throughput and latency to detect bottlenecks.
+- Avoid overprovisioning; scale out instead of up where possible.
+
+AVAILABILITY & RESILIENCE:
+- Use Availability Sets (in single region) or Zones (across datacenters).
+- Combine Load Balancers with health probes for frontend VMs.
+- Enable Azure Backup for all critical VMs.
+- Validate backup restore points regularly.
+- Use snapshot automation for additional recovery options.
+
+AUTOMATION:
+- Use Azure Update Manager or Automation Account for patching.
+- Use Desired State Configuration (DSC) or Azure VM Extensions to enforce configs.
+- Use auto-shutdown for dev/test environments.
+- Implement VM scale sets if your workload supports it.
+
+MONITORING:
+- Enable diagnostic settings and send metrics to Log Analytics.
+- Monitor key metrics: CPU, memory, disk IO, network usage.
+- Set alerts for critical thresholds (e.g., CPU > 85% for 10 mins).
+- Analyze performance trends using Azure Monitor and Workbooks.
+
+BACKUP & DISASTER RECOVERY:
+- Use Azure Backup or third-party tools for consistent backup.
+- Enable application-aware backup for SQL or other workloads.
+- Replicate VMs to a secondary region using Azure Site Recovery (ASR).
+
+COMPLIANCE & GOVERNANCE:
+- Enforce tags via Azure Policy.
+- Limit allowed VM SKUs and locations via policy.
+- Monitor policy compliance in Microsoft Defender for Cloud.
+
+RECOMMENDED TOOLS:
+- Azure Advisor for cost, security, and performance recommendations.
+- Azure Monitor & Workbooks for VM health and performance analysis.
+- Azure Policy for enforcing configurations.
+- Microsoft Defender for Cloud for security hardening.
+- Azure Backup & Site Recovery for data protection.

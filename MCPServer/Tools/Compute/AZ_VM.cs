@@ -1,13 +1,96 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using Azure.ResourceManager.Compute;
+using Azure.ResourceManager.Compute.Models;
 using ModelContextProtocol.Server;
 
 namespace MCPServer.Tools;
 
 [McpServerToolType]
-public static class TerraformTools
+public static class VMTools
 {
-    [McpServerTool, Description("Deploys a VM.")]
+
+[McpServerTool, Description("List Virtual Machines by Resource Group Name")]
+public static async Task<List<string>> funListVirtualMachinesByResourceGroup(string pSubscriptionId, string pResourceGroupName)
+{
+    var vResult = new List<string>();
+    try
+    {
+        var vArmClient = AZ_AuthHelper.funGetArmClient(pSubscriptionId);
+        var vSubscription = await vArmClient.GetDefaultSubscriptionAsync();
+        var vResourceGroup = vSubscription.GetResourceGroup(pResourceGroupName).Value;
+        var vVmCollection = vResourceGroup.GetVirtualMachines();
+
+        await foreach (var vVm in vVmCollection)
+        {
+            var vVmInfo = vVm.Data;
+            vResult.Add($"{vVmInfo.Name} ({vVmInfo.Id}) - Size: {vVmInfo.HardwareProfile?.VmSize} - OS: {vVmInfo.StorageProfile?.OSDisk?.OSType}");
+        }
+    }
+    catch (Exception vEx)
+    {
+        vResult.Add($"[ERROR] {vEx.Message}");
+    }
+
+    return vResult;
+}
+
+[McpServerTool, Description("List All Virtual Machines in the Subscription")]
+public static async Task<List<string>> funListAllVirtualMachines(string pSubscriptionId)
+{
+    var vResult = new List<string>();
+    try
+    {
+        var vArmClient = AZ_AuthHelper.funGetArmClient(pSubscriptionId);
+        var vSubscription = await vArmClient.GetDefaultSubscriptionAsync();
+        var vResourceGroups = vSubscription.GetResourceGroups();
+
+        await foreach (var vRg in vResourceGroups)
+        {
+            var vVmCollection = vRg.GetVirtualMachines();
+            await foreach (var vVm in vVmCollection)
+            {
+                var vVmInfo = vVm.Data;
+                vResult.Add($"{vVmInfo.Name} ({vVmInfo.Id}) - Size: {vVmInfo.HardwareProfile?.VmSize} - OS: {vVmInfo.StorageProfile?.OSDisk?.OSType}");
+            }
+        }
+    }
+    catch (Exception vEx)
+    {
+        vResult.Add($"[ERROR] {vEx.Message}");
+    }
+
+    return vResult;
+}
+
+[McpServerTool, Description("Get VM details by name and resource group")]
+public static async Task<List<string>> funGetVirtualMachineDetails(string pSubscriptionId, string pResourceGroupName, string pVmName)
+{
+    var vResult = new List<string>();
+    try
+    {
+        var vArmClient = AZ_AuthHelper.funGetArmClient(pSubscriptionId);
+        var vSubscription = await vArmClient.GetDefaultSubscriptionAsync();
+        var vResourceGroup = vSubscription.GetResourceGroup(pResourceGroupName).Value;
+        var vVm = await vResourceGroup.GetVirtualMachines().GetAsync(pVmName);
+        var vVmData = vVm.Value.Data;
+
+        vResult.Add($"Name: {vVmData.Name}");
+        vResult.Add($"Size: {vVmData.HardwareProfile.VmSize}");
+        vResult.Add($"OS Type: {vVmData.StorageProfile.OSDisk.OSType}");
+        vResult.Add($"Disk Type: {vVmData.StorageProfile.OSDisk.ManagedDisk?.StorageAccountType}");
+        vResult.Add($"Admin Username: {vVmData.OSProfile?.AdminUsername}");
+        vResult.Add($"Network Interfaces: {string.Join(", ", vVmData.NetworkProfile?.NetworkInterfaces?.Select(nic => nic.Id.ToString()))}");
+    }
+    catch (Exception ex)
+    {
+        vResult.Add($"[ERROR] {ex.Message}");
+    }
+
+    return vResult;
+}
+
+  [McpServerTool, Description("Deploys a VM.")]
     public static string funDeployVirtualMachine(string pSubscriptionId,string pVmName, string pLocation, string pSshPublicKey)
     {
         try

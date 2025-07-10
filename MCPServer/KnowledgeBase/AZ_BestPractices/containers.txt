@@ -1,0 +1,73 @@
+Azure Containers Best Practices
+
+GENERAL STRATEGY:
+- Choose the right service based on workload:
+  - **Azure Kubernetes Service (AKS)**: full orchestration, enterprise-grade workloads.
+  - **Azure Container Apps (ACA)**: serverless containers with autoscaling, best for microservices and event-driven workloads.
+  - **Azure Container Instances (ACI)**: short-lived jobs, batch processing, quick tests.
+
+IMAGE BUILD & REGISTRY:
+- Use multi-stage Docker builds to minimize image size and reduce attack surface.
+- Store container images in Azure Container Registry (ACR).
+- Use ACR Tasks for automated builds and base image updates.
+- Enable content trust and image scanning in ACR for vulnerability detection.
+- Tag images with version, environment, and release metadata.
+
+SECURITY:
+- Use private container registries (ACR) instead of public Docker Hub when possible.
+- Enable Defender for Containers to scan images and monitor runtime behavior.
+- Configure Azure RBAC for ACR and limit access via service principals or managed identity.
+- Avoid running containers as root; define a non-root user in the Dockerfile.
+- Use network policies in AKS to control pod-to-pod traffic.
+- Use Azure Key Vault or environment variables (App Settings) for secrets; never hardcode.
+
+AKS (Azure Kubernetes Service) BEST PRACTICES:
+- Use node pools for workload separation (e.g., Linux/Windows, GPU/general, dev/prod).
+- Enable autoscaler with proper min/max limits.
+- Use managed identities for Kubelet, not service principals.
+- Use Azure CNI for advanced networking scenarios.
+- Regularly update Kubernetes version to latest supported.
+- Enable diagnostic logs and container insights.
+- Use Pod Disruption Budgets (PDBs) to avoid downtime during maintenance.
+- Use readiness and liveness probes for application health.
+- Apply resource limits (CPU/memory) to every pod.
+- Use Helm or Bicep for consistent AKS resource provisioning.
+
+AZURE CONTAINER APPS (ACA):
+- Use revisions and traffic splitting for safe deployments.
+- Use Dapr integration for microservices communication and service discovery.
+- Use autoscaling rules based on HTTP requests, CPU, memory, or custom KEDA triggers.
+- Configure Ingress to allow only authenticated or internal traffic.
+- Store app secrets in environment variables or reference Azure Key Vault.
+
+AZURE CONTAINER INSTANCES (ACI):
+- Use for ephemeral, event-driven, or simple workloads.
+- Do not expose ACI directly to the internet without IP filtering or firewall rules.
+- Monitor logs and performance using Log Analytics integration.
+- Always specify resource requests (CPU/memory) to avoid throttling.
+
+OBSERVABILITY & MONITORING:
+- Enable Container Insights for AKS and ACA.
+- Log container stdout/stderr to Azure Monitor or Log Analytics.
+- Use Application Insights if running app instrumentation inside containers.
+- Create alerts for CPU/memory limits, pod evictions, and crash loops.
+
+DEVOPS & DEPLOYMENT:
+- Use GitHub Actions, Azure DevOps, or Flux for GitOps-based AKS deployments.
+- Implement canary or blue/green deployments using Kubernetes or Container Apps revisions.
+- Secure deployment pipelines with role-based access and secret rotation.
+- Use Infrastructure as Code (e.g., Bicep, Terraform) for provisioning all container resources.
+
+GOVERNANCE:
+- Use Azure Policy to control allowed container images (ACR only, image scan passed, etc.).
+- Audit and monitor container usage with Defender for Cloud.
+- Tag AKS clusters, ACA apps, and ACR registries with environment, owner, and project.
+
+RECOMMENDED TOOLS:
+- Azure Container Registry (ACR)
+- Azure Kubernetes Service (AKS)
+- Azure Container Apps (ACA)
+- Azure Container Instances (ACI)
+- Bicep / Terraform for provisioning
+- Azure Monitor + Container Insights
+- Microsoft Defender for Containers
