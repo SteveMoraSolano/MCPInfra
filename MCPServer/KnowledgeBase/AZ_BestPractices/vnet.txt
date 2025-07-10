@@ -1,0 +1,59 @@
+Azure Virtual Network (VNet) Best Practices
+
+GENERAL DESIGN:
+- Design the virtual network IP space based on RFC1918 and avoid overlap with on-premises networks.
+- Use address spaces large enough to support future scaling without the need to re-IP.
+- Use subnets to segment workloads logically (e.g., frontend, backend, database, management).
+- Reserve dedicated subnets for gateway, bastion, and firewall if needed.
+- Avoid overly large subnets (wasteful IP consumption and harder to manage).
+
+NAME & TAGGING:
+- Use consistent naming conventions for VNets and subnets (e.g., `<env>-vnet-westus`).
+- Tag VNets with environment, owner, and purpose for governance and cost tracking.
+
+SECURITY:
+- Apply Network Security Groups (NSGs) at subnet level to enforce granular traffic control.
+- Use application security groups (ASGs) to group VM rules by role.
+- Deny all inbound traffic by default and explicitly allow only required ports.
+- Monitor NSG flow logs to identify unexpected traffic patterns.
+- Use Azure Firewall or third-party firewalls for centralized inspection.
+- For public-facing resources, place them behind a load balancer or Application Gateway + WAF.
+
+NETWORK ACCESS:
+- Use Private Link to connect to Azure PaaS services (e.g., Storage, SQL) securely.
+- Prefer Service Endpoints when Private Link is not available, but avoid both on the same subnet.
+- Use User-Defined Routes (UDRs) for forced tunneling or custom traffic paths.
+- Enable DNS resolution via custom DNS servers or Azure-provided DNS as appropriate.
+- Use VNet Peering for cross-VNet communication (within/between regions) with low latency.
+
+AVAILABILITY & RESILIENCE:
+- Use multiple Availability Zones or regions when designing critical architectures.
+- Implement redundant VPN gateways or ExpressRoute circuits for HA.
+- Ensure UDRs and NSGs are replicated across critical paths to avoid asymmetric routing.
+
+PERFORMANCE:
+- Avoid NSG rules with wide address ranges or wildcard sources.
+- Use accelerated networking for supported VM SKUs to reduce latency.
+- Segment workloads by performance sensitivity and apply appropriate controls.
+
+MONITORING:
+- Enable NSG flow logs and send to Log Analytics for analysis.
+- Monitor metrics for VPN Gateway, ExpressRoute, Load Balancers, and traffic throughput.
+- Set alerts on bandwidth thresholds, gateway health, and unauthorized traffic attempts.
+
+HYBRID CONNECTIVITY:
+- For on-premises to Azure, prefer ExpressRoute for high-throughput, low-latency needs.
+- Use VPN Gateway with active-active configuration for production workloads.
+- Use BGP to dynamically advertise routes where possible.
+- Keep gateway subnets separate and sized properly (/27 or larger).
+
+GOVERNANCE:
+- Use Azure Policy to enforce VNet configurations (e.g., deny internet-facing subnets).
+- Restrict creation of VNets to certain regions or naming patterns if needed.
+- Review NSG and UDR compliance via Microsoft Defender for Cloud.
+
+RECOMMENDED TOOLS:
+- Azure Network Watcher: connection troubleshoot, flow logs, IP flow verify.
+- Azure Firewall Manager for managing global firewall policies.
+- Azure Monitor for network metrics and health.
+- Microsoft Defender for Cloud for threat detection and hardening guidance.

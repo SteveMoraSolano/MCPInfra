@@ -1,0 +1,73 @@
+Azure Security Best Practices
+
+GENERAL PRINCIPLES:
+- Follow Zero Trust architecture principles: never trust, always verify.
+- Enforce least privilege access across all services.
+- Enable Microsoft Defender for Cloud and review Secure Score regularly.
+- Use role-based access control (RBAC) for all resources.
+- Audit and rotate secrets and credentials periodically.
+
+IDENTITY & ACCESS MANAGEMENT:
+- Enable Azure AD Multi-Factor Authentication (MFA) for all users.
+- Use Conditional Access policies to restrict risky sign-ins.
+- Use Azure AD Privileged Identity Management (PIM) to manage Just-In-Time access.
+- Assign only built-in roles or custom roles with minimal permissions.
+- Use Azure AD groups to manage access at scale.
+
+CREDENTIALS & KEY MANAGEMENT:
+- NEVER hardcode secrets or credentials.
+- Store all secrets, tokens, certificates in Azure Key Vault.
+- Enable purge protection and soft-delete in Key Vault.
+- Enable Key Vault firewall and private endpoint access where possible.
+- Use managed identities (System-assigned or User-assigned) instead of client secrets.
+
+NETWORK SECURITY:
+- Restrict NSG (Network Security Group) rules to only allow required traffic.
+- Block all inbound public access unless explicitly needed.
+- Use Azure Firewall or third-party appliances for advanced filtering.
+- Use Private Link or Service Endpoints instead of public IPs.
+- Apply Just-In-Time VM Access via Microsoft Defender for Cloud.
+
+STORAGE SECURITY:
+- Require secure transfer (HTTPS only) for all storage accounts.
+- Enable soft-delete for blobs, file shares, and containers.
+- Use Shared Access Signature (SAS) with least privilege and short expiry.
+- Prefer Azure AD authentication over access keys.
+- Restrict access via firewall and virtual networks.
+
+LOGGING, MONITORING & DETECTION:
+- Enable diagnostic settings for all critical resources and send to Log Analytics.
+- Monitor Azure Activity Logs for unauthorized or unexpected changes.
+- Enable Microsoft Defender for each supported resource type (e.g., VMs, SQL, Storage).
+- Set up alerts for suspicious behavior (e.g., large data downloads, failed logins).
+- Integrate with SIEM (e.g., Microsoft Sentinel) for advanced detection.
+
+SECURITY UPDATES & PATCHING:
+- Enable automatic OS and software updates for all Azure VMs.
+- Use Azure Update Manager or Azure Automation for patching management.
+- Monitor patch compliance using Defender for Cloud.
+
+APPLICATION SECURITY:
+- Use Application Gateway WAF (Web Application Firewall) for web workloads.
+- Enable HTTPS-only on App Services, Functions, Front Doors, and Gateways.
+- Use Managed Certificates or Azure Key Vault Certificates.
+- Always validate input to avoid injection attacks.
+
+CONTAINER SECURITY:
+- Use Azure Policy to restrict container images to trusted registries.
+- Scan images in Azure Container Registry for vulnerabilities.
+- Use Defender for Containers (AKS, ACI) for runtime protection.
+- Apply network policies in AKS to restrict pod communication.
+
+DATABASE SECURITY:
+- Enable advanced threat protection on SQL, Cosmos DB, and PostgreSQL.
+- Use Transparent Data Encryption (TDE) where available.
+- Use firewall rules and VNet service endpoints for access control.
+- Always use managed identities for access from apps.
+
+RECOMMENDED TOOLS:
+- Microsoft Defender for Cloud (Free tier enabled by default)
+- Microsoft Sentinel for SIEM & SOAR
+- Azure Policy for enforcement and compliance
+- Azure Key Vault for secrets and certificates
+- Azure AD Identity Protection

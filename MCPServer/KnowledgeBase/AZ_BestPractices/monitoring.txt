@@ -1,0 +1,68 @@
+Azure Monitoring & Observability Best Practices
+
+GENERAL PRINCIPLES:
+- Implement centralized monitoring across all services using Azure Monitor.
+- Ensure observability at multiple levels: infrastructure, platform services, applications, and security.
+- Standardize the use of Log Analytics workspaces across subscriptions.
+- Use consistent tagging to group logs and metrics by environment, project, and owner.
+
+LOGGING & DIAGNOSTIC SETTINGS:
+- Enable diagnostic settings for all supported Azure resources (VMs, storage, databases, networking).
+- Send diagnostics to a centralized Log Analytics Workspace.
+- Include both logs and metrics when configuring diagnostic settings.
+- Retain logs for at least 30–90 days, depending on compliance requirements.
+
+AZURE MONITOR COMPONENTS:
+- **Metrics**: Use for near real-time numeric data (e.g., CPU %, disk IO).
+- **Logs**: Use for detailed, queryable structured data via Log Analytics.
+- **Alerts**: Create alerts based on metrics, logs, or activity logs.
+- **Dashboards & Workbooks**: Use to visualize key indicators.
+- **Autoscale**: Use metric-based autoscaling rules for compute resources.
+
+ALERTING:
+- Create action groups for notification via email, SMS, webhooks, Logic Apps, etc.
+- Use severity levels to classify alerts (Sev 0 = critical, Sev 3 = low priority).
+- Use dynamic thresholds to avoid alert noise in fluctuating workloads.
+- Create alerts on:
+  - CPU/Memory thresholds
+  - Disk space nearing capacity
+  - Failed logins or suspicious authentication
+  - VM stopped or unhealthy
+  - Cost spikes or budget thresholds
+
+APPLICATION MONITORING:
+- Use Application Insights for performance, request tracking, dependencies, and telemetry.
+- Correlate logs across distributed systems using telemetry IDs and trace context.
+- Enable distributed tracing for APIs, microservices, and serverless components.
+- Monitor response times, failure rates, and user behavior.
+
+SECURITY MONITORING:
+- Enable Microsoft Defender for Cloud and configure alerts for threat detection.
+- Monitor NSG flow logs and firewall logs for unexpected traffic.
+- Enable Azure Activity Logs and route them to a Log Analytics Workspace or Event Hub.
+- Integrate with Microsoft Sentinel for SIEM use cases if needed.
+
+LOG ANALYTICS BEST PRACTICES:
+- Design queries to be efficient: filter early, limit time ranges, and project only necessary fields.
+- Use saved queries and templates for recurring reports.
+- Organize content using categories and folders in the workspace.
+- Apply role-based access control to control log access at the workspace level.
+
+COST OPTIMIZATION:
+- Avoid overcollecting logs by disabling verbose diagnostics unless needed.
+- Set retention policies to archive or delete logs after required period.
+- Split non-critical workloads into separate Log Analytics Workspaces if necessary.
+
+GOVERNANCE & COMPLIANCE:
+- Enforce diagnostic settings via Azure Policy to avoid gaps in observability.
+- Use policies to ensure logs are being sent to a central workspace.
+- Validate retention and privacy settings against compliance standards (e.g., ISO, SOC, GDPR).
+
+RECOMMENDED TOOLS:
+- Azure Monitor
+- Log Analytics
+- Application Insights
+- Network Watcher
+- Microsoft Sentinel (advanced scenarios)
+- Azure Policy (for enforcement)
+- Workbooks & Dashboards

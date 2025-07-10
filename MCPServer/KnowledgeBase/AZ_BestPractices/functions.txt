@@ -1,0 +1,79 @@
+Azure Functions Best Practices
+
+GENERAL RECOMMENDATIONS:
+- Use Azure Functions for event-driven, serverless compute where scalability and cost-efficiency are needed.
+- Choose the correct hosting plan:
+  - **Consumption Plan**: for lightweight, bursty workloads (pay per execution).
+  - **Premium Plan**: for longer-running, high-load, or VNET-integrated functions.
+  - **Dedicated (App Service) Plan**: when functions must coexist with App Services.
+
+APP STRUCTURE & ORGANIZATION:
+- Group related functions into a single Function App to share resources.
+- Keep each function small and single-purpose (microservice-style).
+- Organize code into folders/modules; avoid bloated `run.csx` or single-class files.
+- Use dependency injection for services, clients, and configuration.
+
+TRIGGERS & BINDINGS:
+- Prefer event-driven bindings (Blob, Queue, Event Grid, Service Bus) over polling.
+- Use **input/output bindings** to simplify integration with other Azure services.
+- Avoid blocking calls or long-running operations in triggers.
+- Always set the correct concurrency and batch settings per trigger type.
+
+SECURITY:
+- **Use Managed Identity** to access Azure resources (Key Vault, Storage, etc.).
+- Never store credentials in code or app settings—use Key Vault references.
+- Use App Settings to store non-sensitive configuration, with slot-specific overrides.
+- Set `WEBSITE_RUN_FROM_PACKAGE` to reduce attack surface and improve deployment integrity.
+- Enable HTTPS-only, and use private endpoints in Premium Plan if needed.
+
+PERFORMANCE & SCALING:
+- Prefer asynchronous code (e.g., `async/await`) to avoid thread blocking.
+- Minimize cold starts by:
+  - Using Premium Plan (pre-warmed instances)
+  - Keeping function dependencies lightweight
+  - Avoiding dynamic compilation (use precompiled class libraries)
+- Reuse `HttpClient`, database clients, and other expensive resources.
+- Enable function-level timeouts (`functionTimeout` in `host.json`).
+- Optimize retry policies and dead-letter queues (DLQ) for triggers.
+
+OBSERVABILITY:
+- Use **Application Insights** for logging, traces, and telemetry.
+- Log structured data (`ILogger`) and correlate requests with `OperationId`.
+- Set `sampling` in `host.json` to avoid excessive telemetry in high-throughput apps.
+- Monitor metrics such as execution count, success rate, duration, and memory usage.
+- Enable alerting for failed executions and function timeouts.
+
+DEPLOYMENT:
+- Use deployment slots for zero-downtime deployments.
+- Use CI/CD with GitHub Actions or Azure DevOps for repeatable deployments.
+- Use Infrastructure as Code (e.g., Bicep, Terraform) to provision function apps.
+- Package deployment with `zip deploy` or `run-from-package` for faster startup.
+
+GOVERNANCE & POLICY:
+- Use Azure Policy to enforce:
+  - HTTPS-only enabled
+  - Diagnostic logs enabled
+  - Functions not running on consumption plan for production
+- Use tags to track ownership and environment.
+
+FUNCTION APP SETTINGS (Recommended):
+- `WEBSITE_RUN_FROM_PACKAGE=1`
+- `FUNCTIONS_WORKER_PROCESS_COUNT` (optimize for CPU-bound workloads)
+- `FUNCTIONS_EXTENSION_VERSION=~4` (always use latest major version)
+- `WEBSITE_CONTENTAZUREFILECONNECTIONSTRING` for durable storage
+- Use `ApplicationSettings.json` (via App Configuration) for config centralization
+
+COMMON PITFALLS TO AVOID:
+- Overusing HTTP triggers instead of messaging/event systems.
+- Hardcoding URLs or secrets.
+- Blocking calls like `Thread.Sleep`, `.Result`, or `.Wait()`.
+- Not setting timeouts or retry policies.
+- Ignoring cold start and scale behavior.
+
+RECOMMENDED TOOLS & INTEGRATIONS:
+- Application Insights
+- Azure Monitor Logs (KQL queries)
+- Azure DevOps or GitHub Actions
+- Azure Key Vault
+- Azure Storage Queues / Event Grid / Service Bus
+

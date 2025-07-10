@@ -1,0 +1,64 @@
+Azure App Services Best Practices
+
+GENERAL CONFIGURATION:
+- Use App Service Plans with appropriate SKU (e.g., P1v3 or higher for production workloads).
+- Use Deployment Slots for zero-downtime deployments (e.g., staging, QA, blue/green).
+- Enable Always On to avoid cold starts (especially for .NET or Java apps).
+- Separate dev/test/prod environments using different slots or separate apps.
+- Use managed identity to access Azure resources securely.
+
+SCALING:
+- Enable autoscaling based on CPU, memory, HTTP queue length, or custom metrics.
+- Use scale-out over scale-up when possible for better reliability and cost control.
+- For consistent traffic, consider premium plans with autoscale rules.
+- Avoid excessive scaling in short intervals to prevent instance thrashing.
+
+SECURITY:
+- Enforce HTTPS-only access.
+- Use a custom domain with managed certificates or Key Vault integration.
+- Enable authentication/authorization via Azure AD, social providers, or custom identity.
+- Restrict access to the app using IP restrictions or Private Endpoints.
+- Use App Service Environment (ASE) or VNet integration for internal-only exposure.
+
+DEPLOYMENT:
+- Prefer CI/CD with GitHub Actions, Azure DevOps, or GitLab over manual FTP deployments.
+- Use deployment slots to test before promoting to production.
+- Set up deployment notifications and rollback strategies.
+- Use startup scripts and application settings for environment-specific config.
+
+APPLICATION SETTINGS:
+- Store secrets and connection strings in App Settings or use Key Vault references.
+- Avoid hardcoding sensitive values in code or config files.
+- Use App Configuration or feature flags for runtime toggles.
+- Enable diagnostic logging (application, HTTP logs, failed request tracing).
+
+PERFORMANCE & RELIABILITY:
+- Use Premium v3 plans for high-scale apps or enterprise workloads.
+- Enable ARR affinity only if session stickiness is required.
+- Use regional VNet integration for secure backend access.
+- Monitor application responsiveness and availability with Application Insights.
+
+MONITORING & LOGGING:
+- Enable App Service diagnostics and send logs to Log Analytics.
+- Use Application Insights for request tracing, exceptions, and dependencies.
+- Set up alerts for slow responses, high failure rates, and server errors (500, 503).
+- Use Workbooks and dashboards to visualize key metrics.
+
+MAINTENANCE & AVAILABILITY:
+- Enable Health Check endpoint for load balancer integration and autoscaling.
+- Use availability zones for zone-redundant deployments where supported.
+- Enable backup and configure retention based on RPO/RTO.
+- Monitor App Service quota usage (CPU, memory, disk) to avoid throttling.
+
+GOVERNANCE:
+- Tag resources with environment, owner, project, and purpose.
+- Use Azure Policy to enforce SKU, backup configuration, and diagnostic settings.
+- Limit public access via firewall/IP rules when appropriate.
+- Audit access and configuration changes using Activity Logs.
+
+RECOMMENDED TOOLS:
+- Azure Monitor and Application Insights
+- Azure DevOps or GitHub Actions for CI/CD
+- App Service Diagnostics (https://<yourapp>.azurewebsites.net/diagnostics)
+- Azure Front Door or App Gateway for secure public access
+- Azure Key Vault for secret management

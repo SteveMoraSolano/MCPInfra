@@ -1,0 +1,101 @@
+Azure SDK Coding & Implementation Guidelines
+
+OVERVIEW:
+This guide provides a standard approach for generating secure, maintainable, and optimized Azure code using SDKs, Infrastructure-as-Code, or automation tools. Apply these principles when generating or analyzing code within an MCP assistant, automation tool, or when making recommendations.
+
+RECOMMENDED TECHNOLOGIES:
+- Focus on modern Azure services: Azure Kubernetes Service (AKS), Azure Container Apps (ACA), Azure Functions, Azure App Services, Azure Static Web Apps, Azure Key Vault, and Azure Bicep.
+- Use the latest Azure SDK versions (track via NuGet or [Azure SDK releases](https://azure.github.io/azure-sdk/releases/latest/)).
+- Always reference official docs and samples (include URL in suggestions if generating code).
+- When querying data plane resources, prefer:
+  - `azmcp` CLI (if available)
+  - Azure SDK over `az cli`
+  - Avoid direct REST unless required for custom integration.
+
+AUTHENTICATION & AUTHORIZATION:
+- Use appropriate authentication methods:
+  - **Managed Identity**: for Azure-hosted resources
+  - **Service Principal**: for CI/CD pipelines
+  - **Interactive Browser**: for local user tools
+  - **Client Secret or Certificate**: for background daemons
+- Never hardcode credentials in code or config files.
+- Use **Azure Key Vault** to securely store and retrieve secrets.
+- Apply **least privilege principle** to identities and use **RBAC**:
+  - Management Plane: Use built-in roles when possible.
+  - Data Plane: Configure fine-grained RBAC per resource (e.g., Key Vault Access Policies, Storage RBAC).
+- Enable **auditing**, **access reviews**, and **diagnostic logs**.
+
+ERROR HANDLING & RELIABILITY:
+- Always implement:
+  - Retry policies with exponential backoff
+  - Circuit breakers where applicable
+  - Catch and log all relevant exceptions
+- Clean up resources and avoid memory leaks
+- Fail gracefully with informative error messages
+
+SECURITY STANDARDS:
+- Enforce HTTPS-only access to services.
+- Avoid public IPs unless absolutely necessary.
+- Use Private Endpoints and Service Endpoints where possible.
+- Encrypt data in transit and at rest.
+- Enable diagnostic logs and alerts for security-related operations.
+
+PERFORMANCE & SCALABILITY:
+- Optimize cold starts (especially in Azure Functions).
+- Use async programming and avoid blocking calls.
+- Use batching, concurrency controls, and connection pooling.
+- Implement caching where appropriate (e.g., Azure Cache for Redis).
+- Use appropriate SKUs for predictable workloads (e.g., Premium Plan for Functions, Standard tier for App Services).
+
+STORAGE OPERATIONS:
+- For blobs < 100MB: Simple upload/download APIs
+- For blobs ≥ 100MB: Use parallel operations or chunking
+- Always choose correct access tier (Hot, Cool, Archive)
+- Use shared access signatures (SAS) securely or Managed Identity for access
+
+DATABASE OPERATIONS:
+- Use parameterized queries to prevent SQL injection
+- Enable geo-redundancy and backups
+- Monitor slow queries and optimize indexing
+- Avoid excessive open connections; use pooling
+
+TEMPLATE / CODE REQUIREMENTS:
+Generated code should:
+- Be clean and readable
+- Follow language-specific conventions
+- Include structured logging and error handling
+- Explain major implementation decisions with comments
+- Include example usage where possible
+
+DEPLOYMENT:
+- Use Infrastructure-as-Code (Bicep or Terraform)
+- Integrate CI/CD with GitHub Actions or Azure DevOps
+- Avoid manual changes to infrastructure
+- Use deployment slots for zero-downtime deployments
+
+PROJECT STRUCTURE:
+- Organize code into logical folders (Functions, Services, Helpers, Config)
+- Use Dependency Injection (DI) for services and configuration
+- Externalize configuration via `appsettings.json`, Azure App Configuration, or environment variables
+
+.NET ASPIRE SUPPORT:
+- To add Aspire to existing .NET app: use `aspire-apphost`
+- To create new project with Aspire: use `aspire-starter` template
+- Use Aspire dashboards and components to observe microservice behavior in local development
+
+EVALUATION STEPS BEFORE EXECUTION:
+1. Analyze user input / infrastructure requirements
+2. Map to Azure services and architecture patterns
+3. Plan security and performance optimizations
+4. Validate against this knowledge base
+5. Generate or recommend code with comments and references
+
+AVOID:
+- Hardcoded credentials or connection strings
+- Lack of error handling
+- Copy-pasting outdated SDK samples
+- Inefficient resource usage (e.g., idle VMs, unnecessary SKUs)
+- Inconsistent naming or structure
+- Public exposure of sensitive services
+
+

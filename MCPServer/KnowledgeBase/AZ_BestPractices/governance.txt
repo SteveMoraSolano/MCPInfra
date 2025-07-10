@@ -1,0 +1,64 @@
+Azure Governance & Management Best Practices
+
+GENERAL GOVERNANCE PRINCIPLES:
+- Establish clear boundaries using Management Groups, Subscriptions, Resource Groups, and RBAC scopes.
+- Apply governance at scale with Azure Policy, Blueprints, and tagging strategies.
+- Separate environments (e.g., dev, test, prod) at the subscription or resource group level.
+- Document naming conventions, role assignments, and resource hierarchy.
+
+MANAGEMENT GROUPS & SUBSCRIPTIONS:
+- Use Management Groups to reflect organizational structure (e.g., by business unit or environment).
+- Use separate subscriptions for production and non-production workloads.
+- Group subscriptions under management groups for centralized policy assignment and budgeting.
+- Delegate subscription creation and management through custom roles or Azure Landing Zones.
+
+ROLE-BASED ACCESS CONTROL (RBAC):
+- Follow least privilege principle in all role assignments.
+- Use built-in roles (e.g., Reader, Contributor) whenever possible.
+- Create custom roles only when necessary and scope them to specific resource groups or subscriptions.
+- Regularly audit RBAC assignments and remove unused or excessive permissions.
+- Use Azure AD groups to manage access rather than individual user assignments.
+
+TAGGING STRATEGY:
+- Define a required set of tags (e.g., Environment, Owner, CostCenter, Project, Confidentiality).
+- Use Azure Policy to enforce required tags and tag formats.
+- Automate tag application using Azure Functions, Logic Apps, or Infrastructure as Code.
+- Use tags to group resources for cost analysis, automation, and compliance reporting.
+
+AZURE POLICY:
+- Use built-in policy definitions to enforce configurations (e.g., allowed SKUs, secure transfer).
+- Create custom policies to meet organizational compliance or security standards.
+- Assign policies at the management group or subscription level to enforce consistency.
+- Use policy initiatives (policy sets) for grouped enforcement (e.g., security baseline).
+- Monitor compliance state in the Azure Policy dashboard and take action on non-compliant resources.
+
+BLUEPRINTS (LEGACY / OPTIONAL):
+- Use Azure Blueprints to deploy standard environments with predefined templates, policies, and roles.
+- Consider using Bicep and Azure Landing Zones as a modern alternative to Blueprints.
+- Note: Azure Blueprints is being deprecated — prefer ARM templates or Bicep modules for new workloads.
+
+RESOURCE ORGANIZATION:
+- Use Resource Groups to organize related resources that share a lifecycle.
+- Avoid placing unrelated workloads in the same resource group.
+- Structure resource groups logically: by workload, application, or environment.
+- Apply RBAC and policy at the resource group level for isolation and control.
+
+COST MANAGEMENT & BUDGETING:
+- Enable Cost Management + Billing in all subscriptions.
+- Set budgets and create alerts for teams or projects based on tags.
+- Analyze cost trends monthly and optimize underused resources.
+- Use reservation recommendations and Azure Advisor for discounts and optimization.
+
+COMPLIANCE & AUDITING:
+- Enable activity logs in all subscriptions and export to Log Analytics or Storage for long-term retention.
+- Review access logs, policy compliance, and configuration drift regularly.
+- Use Microsoft Defender for Cloud to assess regulatory compliance and security posture.
+- Document governance strategy and perform periodic reviews with stakeholders.
+
+RECOMMENDED TOOLS:
+- Azure Policy (for enforcement)
+- Azure Resource Graph (for querying resources at scale)
+- Azure Monitor / Log Analytics (for auditing and compliance)
+- Azure Cost Management
+- Microsoft Defender for Cloud (compliance recommendations)
+- Azure Landing Zones / Enterprise Scale
