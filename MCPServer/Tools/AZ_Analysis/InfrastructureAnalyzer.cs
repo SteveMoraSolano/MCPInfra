@@ -6,7 +6,7 @@ namespace MCPServer.Tools;
 [McpServerToolType]
 public static class InfraAnalyzerTools
 {
-[McpServerTool, Description("Analyze a resource group infrastructure and return metadata for best practice evaluation. Valid resource types: vm, vnet.")]
+[McpServerTool, Description("Analyze a resource group infrastructure and return with deep insights for best practice evaluation.")]
 public static async Task<List<string>> funAnalyzeInfrastructure(string pSubscriptionId, string pResourceGroupName)
 {
     var vResult = new List<string>();
@@ -18,9 +18,9 @@ public static async Task<List<string>> funAnalyzeInfrastructure(string pSubscrip
         vResult.AddRange(await StorageAnalyzerTools.funAnalyzeStorageAccount(pSubscriptionId, pResourceGroupName));
         vResult.AddRange(await KeyVaultAnalyzerTools.funAnalyzeKeyVault(pSubscriptionId, pResourceGroupName));
         vResult.AddRange(await ContainerAnalyzerTools.funAnalyzeContainerInstances(pSubscriptionId, pResourceGroupName));
-         vResult.AddRange(await AppServiceAnalyzerTools.funAnalyzeAppServices(pSubscriptionId, pResourceGroupName));
+        vResult.AddRange(await AppServiceAnalyzerTools.funAnalyzeAppServices(pSubscriptionId, pResourceGroupName));
 
-        vResult.Add($"\n✅ Infrastructure data collected successfully. Ready for best-practice evaluation.");
+        vResult.Add($"\nInfrastructure data collected successfully. Ready for best-practice evaluation.");
     }
     catch (Exception ex)
     {
