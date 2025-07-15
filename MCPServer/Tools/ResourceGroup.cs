@@ -26,7 +26,7 @@ public static class ResourceGroupTools
 
             await foreach (var vRg in vResourceGroups.GetAllAsync())
             {
-                vResult.Add(vRg.Data.Name);
+                vResult.Add($"- {vRg.Data.Name}");
             }
 
             return vResult;
