@@ -4,13 +4,13 @@
 
 ## Key Features
 
--  **Secure Authentication** – Leverages environment variables to authenticate securely with Azure (supports managed identity or service principal)
--  **Azure Resource Management** – List, create, and analyze Azure Resource Groups, VMs, Networks, Storage, Cosmos DB, and more
--  **Natural Language Integration with Claude** – Enables intelligent interactions through `claude_desktop_config.json` for AI-assisted workflows
--  **Infrastructure-as-Code with Terraform** – Provision VMs and networks with dynamic Terraform templates generated at runtime
 -  **Built-in Infrastructure Analyzer** – Evaluates deployed resources against best practices and provides clear insights (✅ Good | ⚠️ Warnings | 🟥 Issues)
--  **Embedded Best Practices Engine** – Uses internal knowledge base (no external API calls) to compare infrastructure health and compliance
+-  **Infrastructure-as-Code with Terraform** – Provision VMs and networks with dynamic Terraform templates generated at runtime
+-  **Azure Resource Management** – List, create, and analyze Azure Resource Groups, VMs, Networks, Storage, Cosmos DB, and more
+-  **Embedded Best Practices Engine** – Uses internal knowledge base to compare infrastructure health and compliance
+-  **Secure Authentication** – Leverages environment variables to authenticate securely with Azure (supports managed identity or service principal)
 -  **Fully Containerized** – Ready-to-run with Docker and available on Docker Hub
+-  **Natural Language Integration with Claude** – Enables intelligent interactions through `claude_desktop_config.json` for AI-assisted workflows
 
 ---
 
@@ -59,36 +59,41 @@ Once configured, Claude will automatically pull and execute the container when p
 - **Create Resource Group** – Creates a new resource group.
 - **List Resources in Resource Group** – Lists all resources within a specific resource group.
 
-### App Configuration
-- **List App Configuration Stores** – Retrieves all App Configuration instances in the subscription.
-
 ### Subscriptions
 - **List Subscriptions** – Displays all accessible Azure subscriptions.
 
-### Cosmos DB
-- **List Cosmos DB Accounts** – Lists all Cosmos DB accounts in the subscription.
-- **List Cosmos DB Accounts by Resource Group** – Lists Cosmos DB accounts in a specific resource group.
+### Storage
+- **List Storage Accounts** – Lists all storage accounts across the subscription.
+- **Analyze Storage Accounts** – Reviews encryption, network restrictions, access settings, and tagging against best practices.
+
+### Virtual Machines (Compute)
+- **Deploy Virtual Machine** – Uses Terraform to deploy a Linux VM with network, IP, and disk configuration.
+- **List Virtual Machines** – Lists all VMs in the subscription.
+- **List VMs by Resource Group** – Lists VMs inside a specific resource group.
+- **Analyze VM Best Practices** – Evaluates VM configuration for encryption, patching, diagnostics, network rules, and more.
+
+### Networking
+- **List Virtual Networks** – Lists all Virtual Networks (VNets) in the subscription.
+- **List Subnets by VNET** – Lists subnets inside a specific VNet.
+- **List NSGs by Resource Group** – Lists Network Security Groups within a specific resource group.
+- **Analyze Virtual Networks** – Examines peering, address spaces, subnets, NSG/routing associations, and DDoS settings.
+
+### Key Vault
+- **Analyze Key Vaults** – Reviews soft delete, purge protection, RBAC, public access, and deployment options.
+
+### App Services
+- **Analyze App Services** – Analyzes web app configurations including logging, VNet integration, TLS, deployment slots, and more.
+
+### Containers
+- **Analyze Container Instances** – Reviews CPU/memory usage, image details, networking, and restart policies of ACI deployments.
 
 ### Log Analytics & Monitoring
 - **List Log Analytics Workspaces** – Shows all Log Analytics workspaces available.
 - **Configure Diagnostic Settings** – Enables diagnostics to a Log Analytics workspace for a given resource.
 
-###  Storage
-- **List Storage Accounts** – Lists all storage accounts across the subscription.
-
-###  Virtual Machines (Compute)
-- **Deploy Virtual Machine** – Uses Terraform to deploy a VM with customizable inputs.
-- **List Virtual Machines** – Lists all VMs in the subscription.
-- **List VMs by Resource Group** – Lists VMs inside a specific resource group.
-- **Analyze VM Best Practices** – Evaluates VM configuration against security, availability, and cost optimization best practices.
-
-### Networking
-- **List Virtual Networks** – Lists all Virtual Networks (VNETs) in the subscription.
-- **List Subnets by VNET** – Lists subnets inside a specific Virtual Network.
-- **List NSGs by Resource Group** – Lists Network Security Groups within a specific resource group.
 
 ### Knowledge Base
-- **List Best Practices** – Retrieves best practices for a specific Azure resource type (e.g., `vm`, `storage`, `keyvault`, `cost-optimization`, etc.). Supports aliases like `costo`, `vm`, `nsg`, etc.
+- **List Best Practices** – Retrieves best practices for a specific Azure resource type (e.g., `vm`, `vnet`, `storage`, `keyvault`, `appservices`, `containers`, `security`, `cost-optimization`, `performance`, `governance`, `monitoring`).
 
 ### Infrastructure Analysis
 - **Analyze Resource Group** – Performs an intelligent review of infrastructure components (VMs, VNETs, NSGs, Tags, etc.) within a resource group and compares them against embedded best practices.
