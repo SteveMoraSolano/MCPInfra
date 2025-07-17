@@ -12,6 +12,12 @@
 -  **Fully Containerized** – Ready-to-run with Docker and available on Docker Hub
 -  **Natural Language Integration with Claude** – Enables intelligent interactions through `claude_desktop_config.json` for AI-assisted workflows
 
+### Demo Video
+
+[![Watch the demo](https://img.youtube.com/vi/FGztFIQIKZ0/0.jpg)](https://www.youtube.com/watch?v=FGztFIQIKZ0&t=0s)
+
+> Watch MCP Azure Infrastructure Assistant in action — from natural language queries to infrastructure analysis and provisioning.
+
 ---
 
 ##  Prerequisites
